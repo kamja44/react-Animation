@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { delay, motion } from "framer-motion";
+import { useRef } from "react";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -8,18 +9,18 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Box = styled(motion.div)`
-  width: 200px;
-  height: 200px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  background-color: rgba(255, 25, 255, 0.2);
-  border-radius: 15px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
-`;
+// const Box = styled(motion.div)`
+//   width: 200px;
+//   height: 200px;
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   background-color: rgba(255, 25, 255, 0.2);
+//   border-radius: 15px;
+//   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+// `;
 
-/*
- * Basic Animation
+/* Basic
+ * 
 const Box = styled(motion.div)`
   width: 200px;
   height: 200px;
@@ -36,8 +37,8 @@ const myVars = {
 };
  */
 
-/** 
- * Variants
+/** Variants
+ * 
 const Box = styled(motion.div)`
   width: 200px;
   height: 200px;
@@ -81,7 +82,49 @@ const circleVars = {
   },
 };
  */
+/**Gesture
+ * Gesture
+
+const Box = styled(motion.div)`
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 1);
+  opacity: 1;
+  border-radius: 15px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+const boxVars = {
+  hover: { scale: 1.5, rotateZ: 90 },
+  click: { borderRadius: 300 },
+};
+ */
+
+const Box = styled(motion.div)`
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 1);
+  opacity: 1;
+  border-radius: 15px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+const boxVars = {
+  hover: { scale: 1.5, rotateZ: 90 },
+  click: { borderRadius: 300 },
+  drag: { backgroundColor: "rgb(46,204,113)", transition: { duration: 3 } },
+};
+const BiggerBox = styled.div`
+  width: 600px;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
 function App() {
+  const biggerBoxRef = useRef<HTMLDivElement>(null);
   return (
     <Wrapper>
       {/* Basic Animation */}
@@ -93,6 +136,20 @@ function App() {
         <Circle variants={circleVars} />
         <Circle variants={circleVars} />
       </Box> */}
+      {/* Gesture */}
+      {/* <Box variants={boxVars} whileHover="hover" whileTap="click" /> */}
+      <BiggerBox ref={biggerBoxRef}>
+        <Box
+          drag
+          dragSnapToOrigin
+          dragElastic={0.3}
+          dragConstraints={biggerBoxRef}
+          variants={boxVars}
+          whileHover="hover"
+          whileDrag="drag"
+          whileTap="click"
+        />
+      </BiggerBox>
     </Wrapper>
   );
 }
